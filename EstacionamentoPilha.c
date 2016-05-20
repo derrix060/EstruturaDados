@@ -14,12 +14,12 @@ typedef struct{
 } estacionamento; //pilha
 
 //Funções
-carro desempilha(estacionamento *);
+carro retirar_carro(estacionamento *);
 void inicia_estacionamento(estacionamento *);
 int cheio (estacionamento *);
 int vazio(estacionamento *);
 void estacionar_carro(estacionamento *, carro);
-carro retirar_carro(estacionamento *, int );
+carro desestacionar_carro(estacionamento *, int );
 
 //Main
 int main() {
@@ -51,7 +51,7 @@ int main() {
 		}
 		else{
 			//desempilhar
-			resp = retirar_carro(&e,placa);
+			resp = desestacionar_carro(&e,placa);
 			printf("CARRO %d FOI EMBORA COM %d MANOBRAS\n",placa, resp.num_manobras);
 		}
 		scanf("%d",&op);
@@ -59,28 +59,30 @@ int main() {
 	
 	return 0;
 }
-carro desempilha(estacionamento *e){
+
+//Implementacao Funcoes
+carro retirar_carro(estacionamento *e){
 	carro temp;
 	temp = e->ca[e->topo];
 	e->topo--;
 	return temp;
 }
-carro retirar_carro(estacionamento *e, int placa){
+carro desestacionar_carro(estacionamento *e, int placa){
 	carro carro_temp;
 	
 	estacionamento est_temp;
 	inicia_estacionamento(&est_temp);
-	carro_temp = desempilha(e);
+	carro_temp = retirar_carro(e);
 	
 	while (carro_temp.placa != placa){
 		
 		carro_temp.num_manobras ++;
-		empilha(&est_temp, carro_temp);
-		carro_temp = desempilha(e);
+		estacionar_carro(&est_temp, carro_temp);
+		carro_temp = retirar_carro(e);
 	}
 	
 	while(!vazio(&est_temp))
-		empilha(e, desempilha(&est_temp));
+		estacionar_carro(e, retirar_carro(&est_temp));
 	
 	return carro_temp;
 	
