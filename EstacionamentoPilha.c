@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+//Structs
+
+
+//Tipos
 typedef struct{
 	int placa;
 	int num_manobras;
@@ -7,12 +12,16 @@ typedef struct{
 	carro ca[10];
 	int topo;
 } estacionamento; //pilha
+
+//Funções
 carro desempilha(estacionamento *);
-carro tirar_carro(estacionamento *, int );
 void inicia_estacionamento(estacionamento *);
 int cheio (estacionamento *);
 int vazio(estacionamento *);
-void empilha(estacionamento *, carro);
+void estacionar_carro(estacionamento *, carro);
+carro retirar_carro(estacionamento *, int );
+
+//Main
 int main() {
 	int op;
 	int placa;
@@ -36,13 +45,13 @@ int main() {
 			}
 			else{
 				c.placa = placa;
-				empilha(&e,c);
+				estacionar_carro(&e,c);
 				printf("CARRO %d GUARDADO\n",placa);
 			}
 		}
 		else{
 			//desempilhar
-			resp = tirar_carro(&e,placa);
+			resp = retirar_carro(&e,placa);
 			printf("CARRO %d FOI EMBORA COM %d MANOBRAS\n",placa, resp.num_manobras);
 		}
 		scanf("%d",&op);
@@ -56,7 +65,7 @@ carro desempilha(estacionamento *e){
 	e->topo--;
 	return temp;
 }
-carro tirar_carro(estacionamento *e, int placa){
+carro retirar_carro(estacionamento *e, int placa){
 	carro carro_temp;
 	
 	estacionamento est_temp;
@@ -85,7 +94,7 @@ int vazio(estacionamento *e){
 int cheio (estacionamento *e){
 	return e->topo == 9;
 }
-void empilha(estacionamento *e, carro c){
+void estacionar_carro(estacionamento *e, carro c){
 	e->topo ++;
 	e->ca[e->topo] = c;
 }
