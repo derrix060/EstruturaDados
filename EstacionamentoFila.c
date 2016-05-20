@@ -1,4 +1,8 @@
 #include <stdio.h>
+//Structs
+
+
+//Tipos
 typedef struct{
 	int placa;
 	int num_manobras;
@@ -8,14 +12,18 @@ typedef struct{
 	int primeiro;
 	int ultimo;
 } estacionamento; //fila
+
+//Funcoes
 int proximo(int);
-carro tirar_carro(estacionamento *, int);
-void inicia_estacionamento(estacionamento *);
-int vazio(estacionamento *);
-int cheio (estacionamento *);
 carro manobrar_carro(estacionamento *);
-void guardar_carro(estacionamento *, carro);
+void inicia_estacionamento(estacionamento *);
+int cheio (estacionamento *);
+int vazio(estacionamento *);
+void estacionar_carro(estacionamento *, carro);
+carro desestacionar_carro(estacionamento *, int);
 void mostrar_estacionamento (estacionamento *);
+
+//Mae
 int main() {
 	int op;
 	int placa;
@@ -39,13 +47,13 @@ int main() {
 			}
 			else{
 				c.placa = placa;
-				guardar_carro(&e, c);
+				estacionar_carro(&e, c);
 				printf("CARRO %d GUARDADO\n",placa);
 			}
 		}
 		else{
 			//desempilhar
-			resp = tirar_carro(&e,placa);
+			resp = desestacionar_carro(&e,placa);
 			printf("CARRO %d FOI EMBORA COM %d MANOBRAS\n",placa, resp.num_manobras);
 		}
 		//mostrar_estacionamento(&e); //use essa parte para "debugar"
@@ -54,10 +62,12 @@ int main() {
 	
 	return 0;
 }
+
+//Implementacao Funcoes
 int proximo(int ultimo){
 	return (ultimo + 1) % 11;
 }
-carro tirar_carro(estacionamento *e, int placa){
+carro desestacionar_carro(estacionamento *e, int placa){
 	carro carro_temp;
 	int i = 0;
 	
@@ -98,7 +108,7 @@ carro manobrar_carro(estacionamento *e){
 	
 	return resp;
 }
-void guardar_carro(estacionamento *e, carro c){
+void estacionar_carro(estacionamento *e, carro c){
 	c.num_manobras ++;
 	e->ultimo = proximo(e->ultimo);
 	e->ca[e->ultimo] = c;
