@@ -14,7 +14,7 @@ typedef struct{
 } estacionamento; //pilha
 
 //Funções
-carro retirar_carro(estacionamento *);
+carro manobrar_carro(estacionamento *);
 void inicia_estacionamento(estacionamento *);
 int cheio (estacionamento *);
 int vazio(estacionamento *);
@@ -61,7 +61,7 @@ int main() {
 }
 
 //Implementacao Funcoes
-carro retirar_carro(estacionamento *e){
+carro manobrar_carro(estacionamento *e){
 	carro temp;
 	temp = e->ca[e->topo];
 	e->topo--;
@@ -72,17 +72,17 @@ carro desestacionar_carro(estacionamento *e, int placa){
 	
 	estacionamento est_temp;
 	inicia_estacionamento(&est_temp);
-	carro_temp = retirar_carro(e);
+	carro_temp = manobrar_carro(e);
 	
 	while (carro_temp.placa != placa){
 		
 		carro_temp.num_manobras ++;
 		estacionar_carro(&est_temp, carro_temp);
-		carro_temp = retirar_carro(e);
+		carro_temp = manobrar_carro(e);
 	}
 	
 	while(!vazio(&est_temp))
-		estacionar_carro(e, retirar_carro(&est_temp));
+		estacionar_carro(e, manobrar_carro(&est_temp));
 	
 	return carro_temp;
 	
