@@ -3,7 +3,7 @@
 
 //Structs
 struct no_struct{
-	carro car;
+	int info;
 	struct no_struct *prox;
 };
 
@@ -12,26 +12,16 @@ typedef struct no_struct no;
 typedef struct{
 	no *primeiro;
 }lista;
-typedef struct{
-	int placa;
-	int num_manobras;
-}carro;
-typedef struct{
-	carro ca[10]
-	
-}estacionamento;
 
 //Funções
-
-//lista
 void inicia_lista (lista *);
 no * cria_no (int);
 int lista_vazia (lista *);
+void mostrar_lista (lista *);
 void insere_inicio (int, lista *);
 void insere_fim (int, lista *);
-void mostrar_lista (lista *);
-//estacionamento
-
+int remove_inicio (int *, lista *);
+int remove_fim (int *, lista *);
 
 //Main
 int main() {
@@ -44,6 +34,16 @@ int main() {
 		insere_inicio(i, &l);
 	}
 	mostrar_lista(&l);
+	
+	if (remove_inicio(&i, &l)){
+		printf("%d foi removido do inicio\n", i);
+		mostrar_lista(&l);
+	}
+	
+	if(remove_fim(&i,&l)){
+		printf("%d foi removido do fim\n", i);
+		mostrar_lista(&l);
+	}
 	
 	
 	return 0;
@@ -67,6 +67,22 @@ void inicia_lista (lista *l){
 }
 int lista_vazia (lista *l){
 	return l->primeiro == NULL;
+}
+void mostrar_lista (lista *l){
+	no *aux;
+	
+	aux = l->primeiro;
+	
+	if(lista_vazia(l))
+		printf("Lista esta vazia!\n");
+	else{
+		//descobrir onde acaba
+		while(aux != NULL){
+			printf("%d ", aux->info);
+			aux = aux->prox;
+		}
+		printf("\n");
+	}
 }
 void insere_inicio (int valor, lista *l){
 	no *novo = cria_no(valor);
@@ -103,19 +119,42 @@ void insere_fim (int valor, lista *l){
 		printf("Nao foi possivel alocar novo no\n");
 	
 }
-void mostrar_lista (lista *l){
-	no *aux;
+int remove_inicio (int *valor, lista *l){
+	no *aux; //para liberar memoria
+	if (lista_vazia(l))
+		return 0;
+	
+	*valor = l->primeiro->info;
 	
 	aux = l->primeiro;
+	l->primeiro = l->primeiro->prox;
 	
-	if(lista_vazia(l))
-		printf("Lista esta vazia!\n");
-	else{
-		//descobrir onde acaba
-		while(aux != NULL){
-			printf("%d ", aux->info);
-			aux = aux->prox;
-		}
-		printf("\n");
+	free(aux);
+	return 1;
+}
+int remove_fim (int *valor, lista *l){
+	no *aux;
+	no *prox_aux;
+	
+	if (lista_vazia(l))
+		return 0;
+	if (l->primeiro->prox == NULL){
+		//só tem um elemento, devolve ele
+		*valor = l->primeiro->info;
+		return 1;
 	}
+	aux = l->primeiro;
+	prox_aux = aux->prox;
+	
+	while(prox_aux->prox != NULL){
+		aux = aux->prox;
+		prox_aux = aux->prox;
+	}
+	
+	*valor = prox_aux->info;
+	aux->prox = NULL;
+	free(aux);
+	free(prox_aux);
+	
+	return 1;
 }
