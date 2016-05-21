@@ -141,6 +141,8 @@ int remove_fim (int *valor, lista *l){
 	if (l->primeiro->prox == NULL){
 		//só tem um elemento, devolve ele
 		*valor = l->primeiro->info;
+		free(l->primeiro);
+		l->primeiro = NULL;
 		return 1;
 	}
 	aux = l->primeiro;
@@ -153,7 +155,6 @@ int remove_fim (int *valor, lista *l){
 	
 	*valor = prox_aux->info;
 	aux->prox = NULL;
-	free(aux);
 	free(prox_aux);
 	
 	return 1;
