@@ -44,7 +44,7 @@ int main() {
 				printf("ESTACIONAMENTO LOTADO\n");
 			}
 			else{
-				c.inicia_carro(placa);
+				c = inicia_carro(placa);
 				estacionar_carro(&e, c);
 				printf("CARRO %d GUARDADO\n",placa);
 			}
@@ -75,15 +75,18 @@ carro desestacionar_carro(estacionamento *e, int placa){
 	carro_temp = manobrar_carro(e);
 	while(carro_temp.placa != placa && i<10){
 		//não é o que eu quero
-		guardar_carro(e, carro_temp);
+		estacionar_carro(e, carro_temp);
 		carro_temp = manobrar_carro(e);
+		i ++;
 	}
 	if (i<10){
 		//achei
 		return carro_temp;
-	else
+	}
+	else{
 		printf("Carro não está no estaconamento\n");
 	}
+	
 }
 void mostrar_estacionamento (estacionamento *e){
 	int i;
