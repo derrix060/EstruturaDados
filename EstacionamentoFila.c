@@ -22,6 +22,7 @@ int vazio(estacionamento *);
 void estacionar_carro(estacionamento *, carro);
 carro desestacionar_carro(estacionamento *, int);
 void mostrar_estacionamento (estacionamento *);
+carro inicia_carro(int);
 
 //Mae
 int main() {
@@ -31,9 +32,6 @@ int main() {
 	inicia_estacionamento(&e);
 	carro c;
 	carro resp;
-	c.num_manobras = -1;
-	
-	
 	
 	
 	scanf("%d",&op);
@@ -46,15 +44,18 @@ int main() {
 				printf("ESTACIONAMENTO LOTADO\n");
 			}
 			else{
-				c.placa = placa;
+				c.inicia_carro(placa);
 				estacionar_carro(&e, c);
 				printf("CARRO %d GUARDADO\n",placa);
 			}
 		}
-		else{
+		else if (op == 1){
 			//desempilhar
 			resp = desestacionar_carro(&e,placa);
 			printf("CARRO %d FOI EMBORA COM %d MANOBRAS\n",placa, resp.num_manobras);
+		}
+		else{
+			printf("Opcao invalida!!\n");
 		}
 		//mostrar_estacionamento(&e); //use essa parte para "debugar"
 		scanf("%d",&op);
@@ -73,12 +74,16 @@ carro desestacionar_carro(estacionamento *e, int placa){
 	
 	carro_temp = manobrar_carro(e);
 	while(carro_temp.placa != placa && i<10){
-		//n�o � o que eu quero
+		//não é o que eu quero
 		guardar_carro(e, carro_temp);
 		carro_temp = manobrar_carro(e);
 	}
-	//achei
-	return carro_temp;
+	if (i<10){
+		//achei
+		return carro_temp;
+	else
+		printf("Carro não está no estaconamento\n");
+	}
 }
 void mostrar_estacionamento (estacionamento *e){
 	int i;
@@ -112,4 +117,12 @@ void estacionar_carro(estacionamento *e, carro c){
 	c.num_manobras ++;
 	e->ultimo = proximo(e->ultimo);
 	e->ca[e->ultimo] = c;
+}
+carro inicia_carro(int placa){
+	carro c;
+	
+	c.num_manobras = -1;
+	c.placa = placa;
+	
+	return c;
 }
