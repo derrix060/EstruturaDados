@@ -1,0 +1,59 @@
+//P2 ED - TE
+//Exercicio 1: 
+
+int main(){
+	t_fila f1, f2, f3;
+	int entrada;
+
+	inicia_fila(10,&f1);
+	inicia_fila(10,&f2);
+	inicia_fila(10,&f3);
+
+	while(!fila_cheia(&f1,10)){
+		scanf("%d", &entrada);
+		insere(entrada, &f1, 10);
+	}
+
+	while(!fila_vazia(&f1,10)){
+		insere(removef(&f1,10),&f2,10);
+		insere(removef(&f1,10),&f3,10);
+	}
+}
+
+//O que pode se dizer: Manteve a ordem dos elementos, o primeiro que entrou foi o primeiro que saiu, respeitando a paridade dos indices correspondentes a suas filas.
+
+
+
+//Exercicio 2
+
+//a)
+void remove_inicio(lista *l){
+	apont_no aux;
+
+	aux = l->prim;
+	l->prim = l->prim->prox;
+	free(aux);
+}
+
+//b)
+int num_elementos_lista(lista *l){
+	apont_no aux;
+	int resultado = 0;
+	if (!lista_vazia(*l)){
+		aux = l->prim;
+		resultado ++;
+
+		while(aux){
+			aux = aux->prox;
+			resultado ++;
+		}
+	}
+
+	return resultado;
+}
+
+
+//Exercicio 3
+
+//a)
+//insere_fim_dupla e remove_fim_dupla
