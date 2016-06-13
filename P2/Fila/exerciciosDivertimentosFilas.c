@@ -1,4 +1,4 @@
-//Exercicios DivertimentosFilas.pdf
+//Exercicios DivertimentosFilas
 
 //fila.c
 typedef struct{
@@ -74,9 +74,58 @@ void inverter_fila(fila *f){
 	inicia_pilha(&p);
 
 	while(!fila_vazia(f)){
-		empilha(remove_ultmo(f),p);
+		empilha(remove_primeiro(f),p);
 	}
 	while(!pilha_vazia){
 		insere(desempilha(p),f);
+	}
+}
+//2.1
+int e_impar(int num){
+	return num%2!=0;
+}
+int qtde_impar_vetor(int v*, int tam){
+	int resultado = 0;
+	int i;
+
+	for(i=0;i<tam;i++){
+		if(e_impar(v[i]))
+			resultado++;
+	}
+}
+void separar_paridade(fila *f, fila *par, fila *impar){
+	int tamanho = num_elementos(f);
+	int qtde_impar = qtde_impar_vetor(f->v, tamanho);
+	int aux;
+
+	inicia_fila(impar, qtde_impar);
+	inicia_fila(par, tamanho-qtde_impar);
+
+	while(!fila_vazia(f)){
+		aux = remove_primeiro(f);
+		if(e_impar(aux))
+			insere(aux,impar);
+		else
+			insere(aux,par);
+	}
+}
+
+//2.2
+void separar_paridade(fila *f, fila *par, fila *impar){
+	int tamanho = num_elementos(f);
+	int qtde_impar = qtde_impar_vetor(f->v, tamanho);
+	int aux;
+
+	inicia_fila(impar, qtde_impar);
+	inicia_fila(par, tamanho-qtde_impar);
+
+	while(!fila_vazia(f)){
+		aux = remove_primeiro(f);
+		if(e_impar(aux))
+			insere(aux,impar);
+		else
+			insere(aux,par);
+		//so adicionar o elemento no final da fila novamente para nao destui-la
+		insere(aux,f);
 	}
 }
